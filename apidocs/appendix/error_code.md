@@ -1,0 +1,137 @@
+# 公共错误代码
+
+API网关会对接口的非业务调用错误做统一处理，返回代码如下：
+
+<table>
+  <tr>
+    <th>code</th>
+    <th>msg</th>
+    <th>sub_code</th>
+    <th>sub_msg</th>
+    <th>解决方案</th>
+  </tr>
+  <tr>
+    <td>0</td>
+    <td>接口调用成功</td>
+    <td>SUCCESS</td>
+    <td>业务调用成功</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>10000</td>
+    <td>系统错误</td>
+    <td>system-error</td>
+    <td>系统异常</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td rowspan="8">40001</td>
+    <td rowspan="8">缺少必选参数</td>
+    <td>missing-method</td>
+    <td>缺少方法名参数</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>missing-signature</td>
+    <td>缺少签名参数</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>missing-sign-type</td>
+    <td>缺少签名类型参数</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>missing-app-id </td>
+    <td>缺少appId参数</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>missing-timestamp</td>
+    <td>缺少时间戳参数</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>missing-version</td>
+    <td>缺少版本参数</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>missing-mer-publickey</td>
+    <td>未配置商户公钥或者证书</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>missing-plat-key</td>
+    <td>未生成平台密钥</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td rowspan="8">40002</td>
+    <td rowspan="8">非法的参数</td>
+    <td>invalid-parameter</td>
+    <td>参数无效</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>invalid-method</td>
+    <td>不存在的方法</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>invalid-signature-type</td>
+    <td>无效的签名类型</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>invalid-signature</td>
+    <td>无效的签名</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>invalid-app-id</td>
+    <td>无效的app_id参数</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>invalid-sub-app-id</td>
+    <td>无效的sub_app_id参数</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>invalid-version</td>
+    <td>无效的版本号</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>invalid-timestamp</td>
+    <td>非法的时间戳参数</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>40003</td>
+    <td>非法的参数</td>
+    <td>ip-not-in-white-list</td>
+    <td>访问IP不在白名单中</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>30001</td>
+    <td>登录失败</td>
+    <td>login-error</td>
+    <td>登录失败</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>30002</td>
+    <td>未登录</td>
+    <td>not-login</td>
+    <td>未登录</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>50001</td>
+    <td>业务处理失败</td>
+    <td colspan="3">对应业务错误代码参见具体的 API 接口文档</td>
+  </tr>
+</table>

@@ -1,0 +1,29 @@
+{
+  "title": "SDK4.COM Java Boot API",
+  "author": "SDK4.COM",
+  "description": "sdk4.com 基于 `Spring Boot` 架构基础框架。",
+  "structure": {
+    "readme": "README.md"
+  },
+  "links": {
+    "gitbook": false,
+    "sharing": {
+      "google": false,
+      "facebook": false,
+      "twitter": false,
+      "all": false
+    }
+  },
+  "plugins": [
+  ],
+  "plugins_bak": [
+    "splitter",
+    "anchors"
+  ],
+  "pluginsConfig": {
+    "simple-page-toc": {
+      "maxDepth": 3,
+      "skipFirstH1": true
+    }
+  }
+}
