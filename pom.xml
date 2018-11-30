@@ -10,7 +10,7 @@
 
     <groupId>com.sdk4</groupId>
     <artifactId>sdk4-java-boot</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.2-2-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>sdk4-java-boot</name>
@@ -62,7 +62,7 @@
         <dependency>
             <groupId>com.sdk4</groupId>
             <artifactId>sdk4-java-common</artifactId>
-            <version>0.0.2-SNAPSHOT</version>
+            <version>0.0.2-1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
@@ -79,6 +79,10 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

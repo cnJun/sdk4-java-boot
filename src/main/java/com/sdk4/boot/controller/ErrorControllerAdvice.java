@@ -18,8 +18,6 @@ import java.util.Map;
 
 /**
  * 错误拦截
- *
- * Created by sh on 2018/8/16.
  */
 @Slf4j
 @RestControllerAdvice
