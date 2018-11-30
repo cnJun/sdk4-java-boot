@@ -28,8 +28,6 @@ public class UserInfo implements ApiService {
 
     @Override
     public ApiResponse call(RequestContent rc) {
-        ApiResponse ret = new ApiResponse();
-
-        return ret;
+        return new ApiResponse();
     }
 }

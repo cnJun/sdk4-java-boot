@@ -87,11 +87,10 @@ public class UserServiceImpl implements UserService {
             } else if (StringUtils.isEmpty(user.getPassword())) {
                 result.setError(4, "未设置密码");
             } else {
-                String password_ = password;
                 if (user.getPasswordMode() == PasswordModeEnum.MD5) {
-                    password_ = DigestUtils.md5Hex(password);
+                    password = DigestUtils.md5Hex(password);
                 }
-                if (StringUtils.equals(user.getPassword(), password_)) {
+                if (StringUtils.equals(user.getPassword(), password)) {
                     result.setError(0, "登录成功", user);
                 } else {
                     result.setError(4, "密码不正确");

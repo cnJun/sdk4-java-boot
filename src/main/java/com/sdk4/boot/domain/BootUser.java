@@ -72,8 +72,8 @@ public class BootUser implements Serializable {
 
     @Data
     public static class QueryCondition extends AbstractQueryCondition {
-        public String mobile;
-        public Integer status;
+        private String mobile;
+        private Integer status;
 
         public QueryCondition(Map params) {
             super(params);

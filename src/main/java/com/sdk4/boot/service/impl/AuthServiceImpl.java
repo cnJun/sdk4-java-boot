@@ -17,7 +17,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,8 +42,6 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public CallResult<LoginUser> loginByMobile(UserTypeEnum type, String mobile, String password) {
         CallResult<LoginUser> result = new CallResult<>();
-
-        DateTime now = new DateTime();
 
         LoginToken loginToken = null;
         Object userObject = null;
@@ -127,7 +124,7 @@ public class AuthServiceImpl implements AuthService {
         Subject subject = SecurityUtils.getSubject();
         if (subject != null && subject.isAuthenticated()) {
             PrincipalCollection pc = subject.getPrincipals();
-            if (pc != null && pc.getRealmNames().size() > 0) {
+            if (pc != null && !pc.getRealmNames().isEmpty()) {
                 String tokenString = pc.getRealmNames().iterator().next();
                 loginUser = getLoginUserByToken(tokenString);
             }
@@ -142,6 +139,7 @@ public class AuthServiceImpl implements AuthService {
             try {
                 loginTokenRepository.deleteById(loginId);
             } catch (Exception e) {
+                log.error("删除登录token失败:{}", loginId, e);
             }
         }
     }

@@ -15,7 +15,7 @@ public class JpaConverterList implements AttributeConverter<List<Object>, String
     public String convertToDatabaseColumn(List<Object> attribute) {
         String str = null;
 
-        if (attribute != null && attribute.size() > 0) {
+        if (attribute != null && !attribute.isEmpty()) {
             str = JSON.toJSONString(attribute);
         }
 

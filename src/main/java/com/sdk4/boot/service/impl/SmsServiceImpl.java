@@ -142,7 +142,7 @@ public class SmsServiceImpl implements SmsService {
             }
         }
 
-        if (listWaitingSave.size() > 0) {
+        if (!listWaitingSave.isEmpty()) {
             try {
                 this.smsCodeRepository.saveAll(listWaitingSave);
             } catch (Exception e) {

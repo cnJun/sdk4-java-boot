@@ -6,5 +6,9 @@ package com.sdk4.boot;
  * @author sh
  */
 public class Constants {
+    private Constants() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static final int DEFAULT_PAGE_SIZE = 10;
 }

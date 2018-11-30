@@ -1,5 +1,6 @@
 package com.sdk4.boot.domain;
 
+import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -7,6 +8,7 @@ import javax.persistence.*;
 /**
  * 序列号生成
  */
+@Data
 @Entity(name = "BootSequence")
 @Table(name = "bcom_sequence")
 @NamedStoredProcedureQueries({
@@ -26,7 +28,7 @@ public class Sequence {
             @org.hibernate.annotations.Parameter(name = "type", value = "string") })
     private String id;
     private String name;
-    private Long begin_num;
+    private Long beginNum;
     private Integer incr;
 
 }

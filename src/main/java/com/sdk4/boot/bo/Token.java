@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.sdk4.boot.enums.UserTypeEnum;
 import com.sdk4.common.util.JWTUtils;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.UnsupportedEncodingException;
@@ -15,6 +16,7 @@ import java.util.Map;
  *
  * @author sh
  */
+@Slf4j
 @Data
 public class Token {
     private UserTypeEnum type;
@@ -56,6 +58,7 @@ public class Token {
                 token = JSON.parseObject(jsonString, Token.class);
             }
         } catch (Exception e) {
+            log.error("解析token失败:{}", tokenString, e);
         }
 
         return token;

@@ -20,8 +20,8 @@ public class AbstractQueryCondition {
     /**
      * 页码，从 0 开始
      */
-    public Integer pageIndex;
-    public Integer pageSize;
+    private Integer pageIndex;
+    private Integer pageSize;
 
     private static Map<String, String> fieldAliases = Maps.newHashMap();
 

@@ -111,26 +111,6 @@ public class ApiController {
             reqParams.put(name, val);
         }
 
-        // files
-        /**
-        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());
-        if (multipartResolver.isMultipart(request)) {
-            MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
-            Iterator<String> filenames = multiRequest.getFileNames();
-            while (filenames.hasNext()) {
-                MultipartFile file = multiRequest.getFile(filenames.next());
-                if (file != null) {
-                    try {
-                        file.transferTo(new File("/Users/9dsoft/Downloads/aa.png"));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-
-                        log.error("上传文件读取错误:{}", file.getName(), e);
-                    }
-                }
-            }
-        }*/
-
         String method = null;
         if (bodyObject != null) {
             method = bodyObject.getString(ApiConstants.METHOD);
@@ -173,8 +153,6 @@ public class ApiController {
                 try {
                     apiRsp = apiExecutor.call(apiReq);
                 } catch (Exception e) {
-                    e.printStackTrace();
-
                     apiRsp = new ApiResponse(5, "系统异常", e);
 
                     log.error("系统异常", e);

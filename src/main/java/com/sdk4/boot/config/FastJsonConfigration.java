@@ -9,7 +9,11 @@ import com.alibaba.fastjson.serializer.SerializeConfig;
  * @author sh
  */
 public class FastJsonConfigration {
-    public static SerializeConfig serializeConfig = new SerializeConfig();
+    private FastJsonConfigration() {
+        throw new IllegalStateException("Utility class");
+    }
+
+    public static final SerializeConfig serializeConfig = new SerializeConfig();
 
     static {
         // https://github.com/alibaba/fastjson/wiki/PropertyNamingStrategy_cn

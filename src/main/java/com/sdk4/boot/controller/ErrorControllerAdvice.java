@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 
@@ -25,18 +24,18 @@ public class ErrorControllerAdvice {
 
     @ResponseBody
     @ExceptionHandler(value = Exception.class)
-    public String errorHandler(HttpServletRequest request, HttpServletResponse response, Exception e) {
-        return error(request, response, e);
+    public String errorHandler(HttpServletRequest request,  Exception e) {
+        return error(request, e);
     }
 
     @ResponseBody
     @ExceptionHandler(value = RuntimeException.class)
-    public String runtimeErrorHandler(HttpServletRequest request, HttpServletResponse response, RuntimeException e) {
-        return error(request, response, e);
+    public String runtimeErrorHandler(HttpServletRequest request, RuntimeException e) {
+        return error(request, e);
     }
 
 
-    private String error(HttpServletRequest request, HttpServletResponse response, Exception e) {
+    private String error(HttpServletRequest request, Exception e) {
         AjaxResponse err = new AjaxResponse();
 
         String method = request.getMethod();
@@ -52,6 +51,7 @@ public class ErrorControllerAdvice {
         try {
             bodyString = WebUtils.getStreamAsString(request.getInputStream(), "UTF-8");
         } catch (IOException e1) {
+            log.error("获取请求body流异常", e1);
         }
 
         log.error("系统异常:{} {}\nheader:{}\nparameter:{}\nbody:{}",

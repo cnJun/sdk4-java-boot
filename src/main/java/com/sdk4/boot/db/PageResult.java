@@ -16,27 +16,27 @@ public class PageResult<T> {
     /**
      * 总记录数 Page.totalElements
      */
-    public long total;
+    private long total;
 
     /**
      * 当前页码 Page.number
      */
-    public int pageIndex;
+    private int pageIndex;
 
     /**
      * 每页显示记录数 Page.size
      */
-    public int pageSize;
+    private int pageSize;
 
     /**
      * 总页数 Page.totalPages
      */
-    public int pageCount;
+    private int pageCount;
 
     private List<T> data;
 
     public static <T> PageResult<T> by(Page<T> page) {
-        PageResult<T> result = new PageResult<T>();
+        PageResult<T> result = new PageResult<>();
 
         result.total = page.getTotalElements();
         result.pageIndex = page.getNumber() + 1;

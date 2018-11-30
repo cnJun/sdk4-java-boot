@@ -35,7 +35,7 @@ public class UserController {
     AuthService authService;
 
     @ResponseBody
-    @RequestMapping(value = "login", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+    @PostMapping(value = "login", produces = "application/json;charset=utf-8")
     public String login(@RequestBody Map<String, String> reqMap, HttpServletRequest request, HttpServletResponse response) {
         AjaxResponse ret = new AjaxResponse();
 
@@ -101,7 +101,7 @@ public class UserController {
         Subject subject = SecurityUtils.getSubject();
         if (subject != null && subject.isAuthenticated()) {
             PrincipalCollection pc = subject.getPrincipals();
-            if (pc != null && pc.getRealmNames().size() > 0) {
+            if (pc != null && !pc.getRealmNames().isEmpty()) {
                 String token = pc.getRealmNames().iterator().next();
 
                 ret.putError(CommonErrorCode.SUCCESS);

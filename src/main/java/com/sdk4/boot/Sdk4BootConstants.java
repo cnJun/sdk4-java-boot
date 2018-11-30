@@ -5,8 +5,11 @@ import com.sdk4.boot.db.IdKeyUuidGenerator;
 /**
  * @author sh
  */
-public interface Sdk4BootConstants {
+public class Sdk4BootConstants {
+    private Sdk4BootConstants() {
+        throw new IllegalStateException("Utility class");
+    }
 
-    String DB_IDKEY_UUID_GENERATOR = IdKeyUuidGenerator.class.getName();
+    public static final String DB_IDKEY_UUID_GENERATOR = IdKeyUuidGenerator.class.getName();
 
 }

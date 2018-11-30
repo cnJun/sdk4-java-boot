@@ -3,55 +3,58 @@ package com.sdk4.boot.apiengine;
 /**
  * Created by sh on 2018/4/20.
  */
-public interface ApiConstants {
+public final class ApiConstants {
+    private ApiConstants() {
+        throw new IllegalStateException("Utility class");
+    }
 
-    String SUCCESS = "SUCCESS";
-    String FAIL = "FAIL";
+    public static final String SUCCESS = "SUCCESS";
+    public static final String FAIL = "FAIL";
 
     /**
      * 应用ID
      */
-    String APP_ID = "app_id";
+    public static final String APP_ID = "app_id";
 
     /**
      * 子商户应用ID
      */
-    String SUB_APP_ID = "sub_app_id";
+    public static final String SUB_APP_ID = "sub_app_id";
 
     /**
      * 接口名称
      */
-    String METHOD = "method";
+    public static final String METHOD = "method";
 
     /**
      * 签名类型
      */
-    String SIGN_TYPE = "sign_type";
+    public static final String SIGN_TYPE = "sign_type";
 
     /**
      * 请求参数的签名串
      */
-    String SIGN = "sign";
+    public static final String SIGN = "sign";
 
     /**
      * 送请求时间，格式：yyyy-MM-dd HH:mm:ss
      */
-    String TIMESTAMP = "timestamp";
+    public static final String TIMESTAMP = "timestamp";
 
     /**
      * 调用接口版本，固定值：1.0
      */
-    String VERSION = "version";
+    public static final String VERSION = "version";
 
     /**
      * 业务请求参数的集合，JSON格式
      */
-    String BIZ_CONTENT = "biz_content";
+    public static final String BIZ_CONTENT = "biz_content";
 
-    String TOKEN = "token";
+    public static final String TOKEN = "token";
 
     /**
      * 业务响应数据的集合，JSON格式
      */
-    String RSP_CONTENT = "rsp_content";
+    public static final String RSP_CONTENT = "rsp_content";
 }

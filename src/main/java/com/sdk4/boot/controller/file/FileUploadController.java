@@ -59,9 +59,8 @@ public class FileUploadController {
             } else if (ftc.getLoginRequired() && loginUser == null) {
                 ret.putError(CommonErrorCode.NOT_LOGIN);
             } else {
-                String base64image = request.getParameter("base64image");
                 List<FileUploadInfo> files = FileUploadHelper.getFileUploadInfos(request);
-                if (files.size() == 0) {
+                if (files.isEmpty()) {
                     ret.putError(CommonErrorCode.BIZ_FAIL.getCode(), "未上传文件");
                 } else {
                     List<Map<String, Object>> success = Lists.newArrayList();
@@ -133,17 +132,15 @@ public class FileUploadController {
                 if (file != null && file.exists()) {
                     Tika tika = new Tika();
                     String contentType = tika.detect(file);
-                    String fileSuffix = "";
                     if (StringUtils.isEmpty(contentType)) {
                         response.setContentType("application/octet-stream");
                     } else {
                         response.setContentType(contentType);
-                        fileSuffix = FileSuffixUtils.getFileSuffix(contentType);
                     }
 
                     if (false) {
                         response.setHeader("content-disposition",
-                                "attachment;filename=" + URLEncoder.encode("filename.x", "UTF-8"));
+                                "attachment;filename=" + URLEncoder.encode("filename." + suffix, "UTF-8"));
                     }
 
                     OutputStream out = response.getOutputStream();
@@ -151,6 +148,7 @@ public class FileUploadController {
                     out.flush();
                 }
             } catch (Exception e) {
+                log.error("输入文件流失败: {}", fileUri, e);
             }
         }
 

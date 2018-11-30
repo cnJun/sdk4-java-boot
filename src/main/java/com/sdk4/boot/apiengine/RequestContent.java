@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.sdk4.boot.bo.LoginUser;
 import com.sdk4.common.util.DateUtils;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.Date;
@@ -13,6 +14,7 @@ import java.util.Map;
 /**
  * Created by sh on 2018/6/19.
  */
+@Slf4j
 @Data
 public class RequestContent {
     /**
@@ -117,10 +119,7 @@ public class RequestContent {
 
         if (this.bizContentObject.containsKey(key)) {
             String str = this.bizContentObject.getString(key);
-            try {
-                result = DateUtils.parseDate(str);
-            } catch (Exception e) {
-            }
+            result = DateUtils.parseDate(str);
         }
 
         return result;

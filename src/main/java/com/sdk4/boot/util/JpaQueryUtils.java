@@ -28,6 +28,9 @@ import java.util.Map;
  */
 @Slf4j
 public class JpaQueryUtils {
+    private JpaQueryUtils() {
+        throw new IllegalStateException("Utility class");
+    }
 
     private static List<String> pageIndexNames = Lists.newArrayList();
     private static List<String> pageSizeNames = Lists.newArrayList();
@@ -98,7 +101,7 @@ public class JpaQueryUtils {
         }
 
         // 查询条件
-        Specification<T> spec = (Specification<T>) (root, criteriaQuery, criteriaBuilder) -> {
+        Specification<T> spec = (root, criteriaQuery, criteriaBuilder) -> {
             List<Predicate> predicates = Lists.newArrayList();
 
             if (MapUtils.isNotEmpty(params)) {
@@ -137,7 +140,7 @@ public class JpaQueryUtils {
                                     && valueClass.getInterfaces().length > 0
                                     && valueClass.getInterfaces()[0].isAssignableFrom(List.class)) {
                                 List list = (List) fieldValue;
-                                if (list.size() > 0) {
+                                if (!list.isEmpty()) {
                                     CriteriaBuilder.In inObj = criteriaBuilder.in(root.get(fieldName));
                                     for (Object item : list) {
                                         inObj.value(item);
@@ -163,7 +166,7 @@ public class JpaQueryUtils {
                 }
             }
 
-            return predicates.size() == 0 ? null : criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+            return predicates.isEmpty() ? null : criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
         };
 
         queryCondition.setSpecification(spec);

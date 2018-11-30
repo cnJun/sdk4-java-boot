@@ -1,8 +1,10 @@
 package com.sdk4.boot.bo;
 
+import com.alibaba.fastjson.JSON;
 import com.sdk4.boot.domain.LoginToken;
 import com.sdk4.boot.enums.UserTypeEnum;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
@@ -13,6 +15,7 @@ import java.util.Map;
  *
  * @author sh
  */
+@Slf4j
 @Data
 public class LoginUser {
     /**
@@ -57,6 +60,7 @@ public class LoginUser {
             try {
                 result = (T) userObject;
             } catch (Exception e) {
+                log.error("转换用户对象失败:{}:{}", userObject.getClass().getName(), JSON.toJSONString(userObject), e);
             }
         }
 

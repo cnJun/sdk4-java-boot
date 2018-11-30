@@ -2,7 +2,6 @@ package com.sdk4.boot.db;
 
 import com.sdk4.common.id.IdUtils;
 import org.hibernate.HibernateException;
-import org.hibernate.MappingException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.id.Configurable;
 import org.hibernate.id.IdentifierGenerator;
@@ -20,7 +19,7 @@ public class IdKeyUuidGenerator implements Configurable, IdentifierGenerator {
     private String prefix;
 
     @Override
-    public Serializable generate(SharedSessionContractImplementor sharedSessionContractImplementor, Object object) throws HibernateException {
+    public Serializable generate(SharedSessionContractImplementor sharedSessionContractImplementor, Object object) {
         Serializable result = null;
 
         if ("string".equals(type)) {
@@ -33,7 +32,7 @@ public class IdKeyUuidGenerator implements Configurable, IdentifierGenerator {
     }
 
     @Override
-    public void configure(Type type, Properties properties, ServiceRegistry serviceRegistry) throws MappingException {
+    public void configure(Type type, Properties properties, ServiceRegistry serviceRegistry) {
         this.type = properties.getProperty("type", "string");
         this.prefix = properties.getProperty("prefix", "");
     }
