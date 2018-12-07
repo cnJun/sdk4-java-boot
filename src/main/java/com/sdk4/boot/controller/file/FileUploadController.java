@@ -2,11 +2,10 @@ package com.sdk4.boot.controller.file;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.sdk4.boot.AjaxResponse;
-import com.sdk4.boot.CallResult;
-import com.sdk4.boot.CommonErrorCode;
 import com.sdk4.boot.bo.LoginUser;
+import com.sdk4.boot.common.BaseResponse;
 import com.sdk4.boot.domain.File;
+import com.sdk4.boot.exception.BaseError;
 import com.sdk4.boot.fileupload.*;
 import com.sdk4.boot.service.AuthService;
 import com.sdk4.boot.service.FileService;
@@ -43,26 +42,27 @@ public class FileUploadController {
     @Autowired
     FileService fileService;
 
-    @ResponseBody
     @RequestMapping(value = { "upload" }, produces = "application/json;charset=utf-8")
-    public String upload(HttpServletRequest request, HttpServletResponse response) {
-        AjaxResponse ret = new AjaxResponse();
+    public BaseResponse<Map> upload(HttpServletRequest request, HttpServletResponse response) {
+        BaseResponse<Map> ret = new BaseResponse<>();
 
         String type = request.getParameter("type");
         if (StringUtils.isEmpty(type)) {
-            ret.putError(CommonErrorCode.MISSING_PARAMETER.getCode(), "上传文件类型type不能为空");
+            ret.put(BaseError.MISSING_PARAMETER.getCode(), "上传文件类型type不能为空");
         } else {
             FileTypeConfig ftc = FileUploadHelper.getFileTypeConfig(type);
             LoginUser loginUser = authService.getLoginUserFromSession();
             if (ftc == null) {
-                ret.putError(CommonErrorCode.INVALID_PARAMETER.getCode(), "上传文件类型type不正确");
+                ret.put(BaseError.INVALID_PARAMETER.getCode(), "上传文件类型type不正确");
             } else if (ftc.getLoginRequired() && loginUser == null) {
-                ret.putError(CommonErrorCode.NOT_LOGIN);
+                ret.put(BaseError.NOT_LOGIN);
             } else {
                 List<FileUploadInfo> files = FileUploadHelper.getFileUploadInfos(request);
                 if (files.isEmpty()) {
-                    ret.putError(CommonErrorCode.BIZ_FAIL.getCode(), "未上传文件");
+                    ret.put(BaseError.BIZ_FAIL.getCode(), "未上传文件");
                 } else {
+                    Map data = Maps.newHashMap();
+
                     List<Map<String, Object>> success = Lists.newArrayList();
                     List<Map<String, Object>> error = Lists.newArrayList();
                     for (FileUploadInfo info : files) {
@@ -76,9 +76,9 @@ public class FileUploadController {
                             if (saveInfo == null) {
                                 addError(error, info, "文件上传失败");
                             } else {
-                                CallResult<File> callResult = fileService.saveUploadFile(type, info, saveInfo, loginUser);
+                                BaseResponse<File> callResult = fileService.saveUploadFile(type, info, saveInfo, loginUser);
 
-                                if (callResult.success()) {
+                                if (callResult.isSuccess()) {
                                     Map<String, Object> item = Maps.newHashMap();
 
                                     item.put("key", info.getFileKey());
@@ -94,22 +94,24 @@ public class FileUploadController {
                         }
                     }
 
-                    ret.put("type", type);
-                    ret.put("success", success.size());
-                    ret.put("fail", error.size());
+                    data.put("type", type);
+                    data.put("success", success.size());
+                    data.put("fail", error.size());
 
                     if (error.size() > 0) {
-                        ret.putError(CommonErrorCode.BIZ_FAIL.getCode(), "文件上传失败");
-                        ret.put("errors", error);
+                        ret.put(BaseError.BIZ_FAIL.getCode(), "文件上传失败");
+                        data.put("errors", error);
                     } else {
-                        ret.putError(0, "文件上传成功");
-                        ret.put("files", success);
+                        ret.put(0, "文件上传成功");
+                        data.put("files", success);
                     }
+
+                    ret.setData(data);
                 }
             }
         }
 
-        return ret.toJSONString();
+        return ret;
     }
 
     private static int FILE_BASE_URL_LEN = "/file/resource/".length();

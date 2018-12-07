@@ -1,9 +1,9 @@
 package com.sdk4.boot.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.sdk4.boot.CallResult;
 import com.sdk4.boot.bo.LoginUser;
 import com.sdk4.boot.bo.Token;
+import com.sdk4.boot.common.BaseResponse;
 import com.sdk4.boot.domain.AdminUser;
 import com.sdk4.boot.domain.LoginToken;
 import com.sdk4.boot.domain.User;
@@ -40,27 +40,27 @@ public class AuthServiceImpl implements AuthService {
     AdminUserService adminUserService;
 
     @Override
-    public CallResult<LoginUser> loginByMobile(UserTypeEnum type, String mobile, String password) {
-        CallResult<LoginUser> result = new CallResult<>();
+    public BaseResponse<LoginUser> loginByMobile(UserTypeEnum type, String mobile, String password) {
+        BaseResponse<LoginUser> result = new BaseResponse<>();
 
         LoginToken loginToken = null;
         Object userObject = null;
 
         if (UserTypeEnum.COMMON_USER == type) {
-            CallResult<User> callResult = userService.loginByMobile(mobile, password);
-            if (callResult.success()) {
+            BaseResponse<User> callResult = userService.loginByMobile(mobile, password);
+            if (callResult.isSuccess()) {
                 loginToken = LoginToken.by(callResult.getData());
                 userObject = callResult.getData();
             } else {
-                result.setError(callResult.getCode(), callResult.getMessage());
+                result.put(callResult.getCode(), callResult.getMessage());
             }
         } else if (UserTypeEnum.ADMIN_USER == type) {
-            CallResult<AdminUser> callResult = adminUserService.loginByMobile(mobile, password);
-            if (callResult.success()) {
+            BaseResponse<AdminUser> callResult = adminUserService.loginByMobile(mobile, password);
+            if (callResult.isSuccess()) {
                 loginToken = LoginToken.by(callResult.getData());
                 userObject = callResult.getData();
             } else {
-                result.setError(callResult.getCode(), callResult.getMessage());
+                result.put(callResult.getCode(), callResult.getMessage());
             }
         }
 
@@ -72,7 +72,7 @@ public class AuthServiceImpl implements AuthService {
 
                 LoginUser loginUser = LoginUser.by(userObject, loginToken);
 
-                result.setError(0, "登录成功", loginUser);
+                result.put(0, "登录成功", loginUser);
             } catch (Exception e) {
                 log.error("生成登录 Token 异常: {}", JSON.toJSONString(loginToken), e);
             }

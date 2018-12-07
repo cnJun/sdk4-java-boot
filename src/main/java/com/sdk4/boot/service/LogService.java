@@ -1,6 +1,6 @@
 package com.sdk4.boot.service;
 
-import com.sdk4.boot.db.PageResult;
+import com.sdk4.boot.common.PageResponse;
 import com.sdk4.boot.domain.ApiLog;
 import com.sdk4.boot.domain.SmsCode;
 
@@ -18,7 +18,7 @@ public interface LogService {
      * @param params
      * @return
      */
-    PageResult<ApiLog> queryApiLog(Map params);
+    PageResponse<ApiLog> queryApiLog(Map params);
 
     /**
      * 查询短信验证码发送列表
@@ -26,6 +26,6 @@ public interface LogService {
      * @param params
      * @return
      */
-    PageResult<SmsCode> querySmsCode(Map params);
+    PageResponse<SmsCode> querySmsCode(Map params);
 
 }

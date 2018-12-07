@@ -3,8 +3,8 @@ package com.sdk4.boot.apiengine;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.google.common.collect.Maps;
-import com.sdk4.boot.CommonErrorCode;
 import com.sdk4.boot.bo.LoginUser;
+import com.sdk4.boot.exception.BaseError;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -67,14 +67,14 @@ public class ApiResponse {
         this.exception = e;
     }
 
-    public ApiResponse(CommonErrorCode error) {
+    public ApiResponse(BaseError error) {
         this.code = error.getCode();
-        this.msg = error.getMsg();
+        this.msg = error.getMessage();
     }
 
-    public ApiResponse(CommonErrorCode error, Exception e) {
+    public ApiResponse(BaseError error, Exception e) {
         this.code = error.getCode();
-        this.msg = error.getMsg();
+        this.msg = error.getMessage();
         this.exception = e;
     }
 

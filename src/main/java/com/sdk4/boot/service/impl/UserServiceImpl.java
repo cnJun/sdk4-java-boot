@@ -1,7 +1,7 @@
 package com.sdk4.boot.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.sdk4.boot.CallResult;
+import com.sdk4.boot.common.BaseResponse;
 import com.sdk4.boot.domain.User;
 import com.sdk4.boot.enums.PasswordModeEnum;
 import com.sdk4.boot.enums.UserStatusEnum;
@@ -31,8 +31,8 @@ public class UserServiceImpl implements UserService {
     UserRepository userRepository;
 
     @Override
-    public CallResult<User> registerByMobile(String mobile, String password) {
-        CallResult<User> result = new CallResult<>();
+    public BaseResponse<User> registerByMobile(String mobile, String password) {
+        BaseResponse<User> result = new BaseResponse<>();
 
         User where = new User();
         where.setMobile(mobile);
@@ -68,32 +68,32 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public CallResult<User> loginByMobile(String mobile, String password) {
-        CallResult<User> result = new CallResult<>();
+    public BaseResponse<User> loginByMobile(String mobile, String password) {
+        BaseResponse<User> result = new BaseResponse<>();
 
         User where = new User();
         where.setMobile(mobile);
 
         List<User> users = this.userRepository.findAll(Example.of(where));
         if (CollectionUtils.isEmpty(users)) {
-            result.setError(4, "用户不存在[" + mobile + "]");
+            result.put(4, "用户不存在[" + mobile + "]");
         } else if (users.size() > 1) {
-            result.setError(4, "用户重复[" + mobile + "]");
+            result.put(4, "用户重复[" + mobile + "]");
         } else {
             User user = users.get(0);
 
             if (user.getStatus() != UserStatusEnum.NORMAL.getCode()) {
-                result.setError(4, "登录失败，账号" + UserStatusEnum.of(user.getStatus()).getText());
+                result.put(4, "登录失败，账号" + UserStatusEnum.of(user.getStatus()).getText());
             } else if (StringUtils.isEmpty(user.getPassword())) {
-                result.setError(4, "未设置密码");
+                result.put(4, "未设置密码");
             } else {
                 if (user.getPasswordMode() == PasswordModeEnum.MD5) {
                     password = DigestUtils.md5Hex(password);
                 }
                 if (StringUtils.equals(user.getPassword(), password)) {
-                    result.setError(0, "登录成功", user);
+                    result.put(0, "登录成功", user);
                 } else {
-                    result.setError(4, "密码不正确");
+                    result.put(4, "密码不正确");
                 }
             }
         }
@@ -104,5 +104,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUser(String id) {
         return userRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public User getUserByMobile(String mobile) {
+        User where = new User();
+        where.setMobile(mobile);
+
+        List<User> users = this.userRepository.findAll(Example.of(where));
+
+        return users.isEmpty() ? null : users.get(0);
     }
 }

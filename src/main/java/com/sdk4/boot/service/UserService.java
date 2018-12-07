@@ -1,6 +1,6 @@
 package com.sdk4.boot.service;
 
-import com.sdk4.boot.CallResult;
+import com.sdk4.boot.common.BaseResponse;
 import com.sdk4.boot.domain.User;
 
 /**
@@ -17,7 +17,7 @@ public interface UserService {
      * @param password
      * @return
      */
-    CallResult<User> registerByMobile(String mobile, String password);
+    BaseResponse<User> registerByMobile(String mobile, String password);
 
     /**
      * 用户登录
@@ -26,7 +26,7 @@ public interface UserService {
      * @param password
      * @return
      */
-    CallResult<User> loginByMobile(String mobile, String password);
+    BaseResponse<User> loginByMobile(String mobile, String password);
 
     /**
      * 根据 id 获取用户
@@ -35,5 +35,13 @@ public interface UserService {
      * @return
      */
     User getUser(String id);
+
+    /**
+     * 根据手机号码获取用户
+     *
+     * @param mobile
+     * @return
+     */
+    User getUserByMobile(String mobile);
 
 }

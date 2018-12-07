@@ -1,7 +1,7 @@
 package com.sdk4.boot.filter;
 
-import com.sdk4.boot.AjaxResponse;
-import com.sdk4.boot.CommonErrorCode;
+import com.sdk4.boot.common.BaseResponse;
+import com.sdk4.boot.exception.BaseError;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 
 import javax.servlet.ServletRequest;
@@ -18,7 +18,7 @@ public class ShiroLoginFilter extends FormAuthenticationFilter {
     protected boolean onAccessDenied(ServletRequest req, ServletResponse rsp) throws IOException {
         HttpServletResponse response = (HttpServletResponse) rsp;
 
-        AjaxResponse ret = new AjaxResponse(CommonErrorCode.NOT_LOGIN);
+        BaseResponse ret = new BaseResponse(BaseError.NOT_LOGIN);
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
         response.getWriter().write(ret.toJSONString());

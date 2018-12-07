@@ -1,6 +1,6 @@
 package com.sdk4.boot.service.impl;
 
-import com.sdk4.boot.CallResult;
+import com.sdk4.boot.common.BaseResponse;
 import com.sdk4.boot.domain.AdminUser;
 import com.sdk4.boot.enums.PasswordModeEnum;
 import com.sdk4.boot.repository.AdminUserRepository;
@@ -23,30 +23,30 @@ public class AdminUserServiceImpl implements AdminUserService {
     AdminUserRepository adminUserRepository;
 
     @Override
-    public CallResult<AdminUser> loginByMobile(String mobile, String password) {
-        CallResult<AdminUser> result = new CallResult<>();
+    public BaseResponse<AdminUser> loginByMobile(String mobile, String password) {
+        BaseResponse<AdminUser> result = new BaseResponse<>();
 
         AdminUser where = new AdminUser();
         where.setMobile(mobile);
 
         List<AdminUser> users = this.adminUserRepository.findAll(Example.of(where));
         if (CollectionUtils.isEmpty(users)) {
-            result.setError(4, "用户不存在[" + mobile + "]");
+            result.put(4, "用户不存在[" + mobile + "]");
         } else if (users.size() > 1) {
-            result.setError(4, "用户重复[" + mobile + "]");
+            result.put(4, "用户重复[" + mobile + "]");
         } else {
             AdminUser user = users.get(0);
 
             if (StringUtils.isEmpty(user.getPassword())) {
-                result.setError(4, "未设置登录密码");
+                result.put(4, "未设置登录密码");
             } else {
                 if (user.getPasswordMode() == PasswordModeEnum.MD5) {
                     password = DigestUtils.md5Hex(password);
                 }
                 if (StringUtils.equals(user.getPassword(), password)) {
-                    result.setError(0, "登录成功", user);
+                    result.put(0, "登录成功", user);
                 } else {
-                    result.setError(4, "密码不正确");
+                    result.put(4, "密码不正确");
                 }
             }
         }

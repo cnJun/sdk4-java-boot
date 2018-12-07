@@ -1,6 +1,5 @@
 package com.sdk4.boot.api.user;
 
-import com.sdk4.boot.CallResult;
 import com.sdk4.boot.apiengine.ApiResponse;
 import com.sdk4.boot.apiengine.ApiService;
 import com.sdk4.boot.apiengine.RequestContent;
@@ -8,6 +7,7 @@ import com.sdk4.boot.bo.LoginUser;
 import com.sdk4.boot.bo.Token;
 import com.sdk4.boot.bo.apimodel.UserLoginRequestModel;
 import com.sdk4.boot.bo.apimodel.UserLoginResponseModel;
+import com.sdk4.boot.common.BaseResponse;
 import com.sdk4.boot.domain.User;
 import com.sdk4.boot.enums.UserTypeEnum;
 import com.sdk4.boot.service.AuthService;
@@ -44,12 +44,12 @@ public class UserLogin implements ApiService {
         } else if (StringUtils.isEmpty(params.getPassword())) {
             ret = new ApiResponse(4, "登录密码不能空");
         } else {
-            CallResult<LoginUser> callResult = authService.loginByMobile(UserTypeEnum.COMMON_USER,
+            BaseResponse<LoginUser> callResult = authService.loginByMobile(UserTypeEnum.COMMON_USER,
                     params.getMobile(), params.getPassword());
 
             ret = new ApiResponse(callResult.getCode(), callResult.getMessage());
 
-            if (callResult.success()) {
+            if (callResult.isSuccess()) {
                 UserLoginResponseModel rspData = new UserLoginResponseModel();
 
                 LoginUser loginUser = callResult.getData();

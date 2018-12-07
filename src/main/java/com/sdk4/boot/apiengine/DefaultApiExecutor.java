@@ -2,8 +2,8 @@ package com.sdk4.boot.apiengine;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.sdk4.boot.CommonErrorCode;
 import com.sdk4.boot.bo.LoginUser;
+import com.sdk4.boot.exception.BaseError;
 import com.sdk4.boot.exception.DaoException;
 import com.sdk4.boot.service.AuthService;
 import lombok.extern.slf4j.Slf4j;
@@ -64,7 +64,7 @@ public class DefaultApiExecutor implements ApiExecutor {
         if (service == null) {
             result = new ApiResponse(4, "方法" + method + "不存在");
         } else if (service.requiredLogin() && loginUser == null) {
-            result = new ApiResponse(CommonErrorCode.NOT_LOGIN);
+            result = new ApiResponse(BaseError.NOT_LOGIN);
         } else {
             rc.setLoginUser(loginUser);
 
@@ -74,14 +74,14 @@ public class DefaultApiExecutor implements ApiExecutor {
                 log.error("调用方法发生异常:{}:{}", method, JSON.toJSONString(req), e);
 
                 if (StringUtils.isNotEmpty(e.getErrorMessage())) {
-                    result = new ApiResponse(CommonErrorCode.BIZ_FAIL.getCode(), e.getErrorMessage(), e);
+                    result = new ApiResponse(BaseError.BIZ_FAIL.getCode(), e.getErrorMessage(), e);
                 } else {
-                    result = new ApiResponse(CommonErrorCode.SYSTEM_ERROR, e);
+                    result = new ApiResponse(BaseError.SYSTEM_ERROR, e);
                 }
             } catch (Exception e) {
                 log.error("调用方法发生异常:{}:{}", method, JSON.toJSONString(req), e);
 
-                result = new ApiResponse(CommonErrorCode.SYSTEM_ERROR);
+                result = new ApiResponse(BaseError.SYSTEM_ERROR);
                 result.setException(e);
             }
         }

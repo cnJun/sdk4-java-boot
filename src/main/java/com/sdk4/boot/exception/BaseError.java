@@ -1,12 +1,14 @@
-package com.sdk4.boot;
+package com.sdk4.boot.exception;
 
 import lombok.Getter;
 
 /**
- * API 接口错误代码
+ * 基本错误
+ *
+ * @author sh
  */
 @Getter
-public enum CommonErrorCode {
+public enum BaseError {
 
     /**
      * 调用成功业务提示
@@ -16,7 +18,9 @@ public enum CommonErrorCode {
     /**
      * 系统错误: 系统异常
      */
-    SYSTEM_ERROR(10000, "系统错误"),
+    SYSTEM_ERROR(10000, "服务器繁忙，请稍后再试"),
+
+    DB_ERROR(10001, "数据库异常"),
 
     /**
      * 登录失败
@@ -62,10 +66,10 @@ public enum CommonErrorCode {
     ;
 
     private int code;
-    private String msg;
+    private String message;
 
-    CommonErrorCode(int code, String msg) {
+    BaseError(int code, String message) {
         this.code = code;
-        this.msg = msg;
+        this.message = message;
     }
 }

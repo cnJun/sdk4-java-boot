@@ -1,6 +1,6 @@
 package com.sdk4.boot.service;
 
-import com.sdk4.boot.CallResult;
+import com.sdk4.boot.common.BaseResponse;
 import com.sdk4.boot.domain.AdminUser;
 
 /**
@@ -17,7 +17,7 @@ public interface AdminUserService {
      * @param password
      * @return
      */
-    CallResult<AdminUser> loginByMobile(String mobile, String password);
+    BaseResponse<AdminUser> loginByMobile(String mobile, String password);
 
     /**
      * 根据 id 获取用户

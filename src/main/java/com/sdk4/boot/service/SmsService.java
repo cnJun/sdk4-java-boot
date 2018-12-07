@@ -1,6 +1,6 @@
 package com.sdk4.boot.service;
 
-import com.sdk4.boot.CallResult;
+import com.sdk4.boot.common.BaseResponse;
 import com.sdk4.boot.domain.SmsCode;
 
 /**
@@ -17,7 +17,7 @@ public interface SmsService {
      * @param mobile 手机号码
      * @return 下发短信id
      */
-    CallResult<SmsCode> sendCheckCode(String type, String mobile);
+    BaseResponse<SmsCode> sendCheckCode(String type, String mobile);
 
     /**
      * 验证短信验证码
@@ -27,6 +27,6 @@ public interface SmsService {
      * @param code 用户输入的验证码
      * @return 验证结果
      */
-    CallResult<SmsCode> verifyCheckCode(String type, String mobile, String code);
+    BaseResponse<SmsCode> verifyCheckCode(String type, String mobile, String code);
 
 }

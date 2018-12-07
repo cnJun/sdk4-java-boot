@@ -1,11 +1,12 @@
 package com.sdk4.boot.controller.user;
 
 import com.google.common.collect.Lists;
-import com.sdk4.boot.AjaxResponse;
-import com.sdk4.boot.CommonErrorCode;
+import com.google.common.collect.Maps;
 import com.sdk4.boot.bo.LoginUser;
+import com.sdk4.boot.common.BaseResponse;
 import com.sdk4.boot.domain.AdminUser;
 import com.sdk4.boot.enums.UserTypeEnum;
+import com.sdk4.boot.exception.BaseError;
 import com.sdk4.boot.service.AuthService;
 import com.sdk4.boot.util.DruidUtils;
 import org.apache.commons.lang.StringUtils;
@@ -34,17 +35,16 @@ public class UserController {
     @Autowired
     AuthService authService;
 
-    @ResponseBody
     @PostMapping(value = "login", produces = "application/json;charset=utf-8")
-    public String login(@RequestBody Map<String, String> reqMap, HttpServletRequest request, HttpServletResponse response) {
-        AjaxResponse ret = new AjaxResponse();
+    public BaseResponse<Map> login(@RequestBody Map<String, String> reqMap, HttpServletRequest request, HttpServletResponse response) {
+        BaseResponse<Map> ret = new BaseResponse<>();
 
         String type = reqMap.get("type");
         String username = reqMap.get("username");
         String password = reqMap.get("password");
 
         if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
-            ret.putError(CommonErrorCode.MISSING_PARAMETER.getCode(), "登录账号密码不能为空");
+            ret.put(BaseError.MISSING_PARAMETER.getCode(), "登录账号密码不能为空");
         } else {
             if (StringUtils.isEmpty(type)) {
                 type = UserTypeEnum.ADMIN_USER.name();
@@ -58,40 +58,42 @@ public class UserController {
                 subject.login(token);
 
                 if (subject.isAuthenticated()) {
-                    ret.putError(0, "登录成功");
+                    ret.put(0, "登录成功");
 
-                    ret.put("token", subject.getPrincipals().getRealmNames().iterator().next());
+                    Map data = Maps.newHashMap();
+                    data.put("token", subject.getPrincipals().getRealmNames().iterator().next());
+
+                    ret.setData(data);
                 } else {
-                    ret.putError(CommonErrorCode.USERNAME_OR_PASSWORD_INCORRECT);
+                    ret.put(BaseError.USERNAME_OR_PASSWORD_INCORRECT);
                 }
             } catch (IncorrectCredentialsException e) {
-                ret.putError(CommonErrorCode.USERNAME_OR_PASSWORD_INCORRECT);
+                ret.put(BaseError.USERNAME_OR_PASSWORD_INCORRECT);
             } catch (ExcessiveAttemptsException e) {
-                ret.putError(CommonErrorCode.EXCESSIVE_ATTEMPT);
+                ret.put(BaseError.EXCESSIVE_ATTEMPT);
             } catch (LockedAccountException e) {
-                ret.putError(CommonErrorCode.ACCOUNT_LOCKED);
+                ret.put(BaseError.ACCOUNT_LOCKED);
             } catch (DisabledAccountException e) {
-                ret.putError(CommonErrorCode.ACCOUNT_DISABLED);
+                ret.put(BaseError.ACCOUNT_DISABLED);
             } catch (ExpiredCredentialsException e) {
-                ret.putError(CommonErrorCode.ACCOUNT_EXPIRED);
+                ret.put(BaseError.ACCOUNT_EXPIRED);
             } catch (UnknownAccountException e) {
-                ret.putError(CommonErrorCode.USERNAME_OR_PASSWORD_INCORRECT);
+                ret.put(BaseError.USERNAME_OR_PASSWORD_INCORRECT);
             } catch (UnauthorizedException e) {
-                ret.putError(CommonErrorCode.UNAUTHORIZED);
+                ret.put(BaseError.UNAUTHORIZED);
             } catch (AuthenticationException e) {
-                ret.putError(CommonErrorCode.USERNAME_OR_PASSWORD_INCORRECT);
+                ret.put(BaseError.USERNAME_OR_PASSWORD_INCORRECT);
             } catch (Exception e) {
-                ret.putError(CommonErrorCode.USERNAME_OR_PASSWORD_INCORRECT);
+                ret.put(BaseError.USERNAME_OR_PASSWORD_INCORRECT);
             }
         }
 
-        return ret.toJSONString();
+        return ret;
     }
 
-    @ResponseBody
     @RequestMapping(value = "info", produces = "application/json;charset=utf-8")
-    public String info(HttpServletRequest request, HttpServletResponse response) {
-        AjaxResponse ret = new AjaxResponse();
+    public BaseResponse<Map> info(HttpServletRequest request, HttpServletResponse response) {
+        BaseResponse<Map> ret = new BaseResponse<>();
 
         List<String> roles = Lists.newArrayList();
 
@@ -102,51 +104,54 @@ public class UserController {
         if (subject != null && subject.isAuthenticated()) {
             PrincipalCollection pc = subject.getPrincipals();
             if (pc != null && !pc.getRealmNames().isEmpty()) {
+                ret.put(BaseError.SUCCESS);
+
+                Map data = Maps.newHashMap();
+
                 String token = pc.getRealmNames().iterator().next();
-
-                ret.putError(CommonErrorCode.SUCCESS);
-
-                ret.put("token", token);
+                data.put("token", token);
 
                 LoginUser loginUser = authService.getLoginUserFromSession();
 
                 if (loginUser != null && loginUser.getUserObject() != null) {
                     if (loginUser.getUserType() == UserTypeEnum.ADMIN_USER) {
                         AdminUser adminUser = loginUser.toUserObject();
-                        ret.put("id", adminUser.getId());
-                        ret.put("name", adminUser.getMobile());
+                        data.put("id", adminUser.getId());
+                        data.put("name", adminUser.getMobile());
 
                         String defaultAvatar = "https://secure.gravatar.com/avatar/default.jpg";
-                        ret.put("avatar", defaultAvatar);
-                        ret.put("roles", roles);
+                        data.put("avatar", defaultAvatar);
+                        data.put("roles", roles);
+
+                        ret.setData(data);
 
                         DruidUtils.setLoginedName(request, adminUser.getMobile());
                     }
                 } else {
-                    ret.putError(CommonErrorCode.NOT_LOGIN);
+                    ret.put(BaseError.NOT_LOGIN);
                 }
             } else {
-                ret.putError(CommonErrorCode.NOT_LOGIN);
+                ret.put(BaseError.NOT_LOGIN);
             }
         } else {
-            ret.putError(CommonErrorCode.NOT_LOGIN);
+            ret.put(BaseError.NOT_LOGIN);
         }
 
-        return ret.toJSONString();
+        return ret;
     }
 
     @ResponseBody
     @RequestMapping(value = "logout", produces = "application/json;charset=utf-8")
-    public String logout() {
-        AjaxResponse ret = new AjaxResponse();
+    public BaseResponse logout() {
+        BaseResponse ret = new BaseResponse();
 
         Subject subject = SecurityUtils.getSubject();
         if (subject != null) {
             subject.logout();
         }
 
-        ret.putError(CommonErrorCode.SUCCESS);
+        ret.put(BaseError.SUCCESS);
 
-        return ret.toJSONString();
+        return ret;
     }
 }

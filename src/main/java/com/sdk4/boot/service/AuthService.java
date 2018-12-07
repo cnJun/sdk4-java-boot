@@ -1,7 +1,7 @@
 package com.sdk4.boot.service;
 
-import com.sdk4.boot.CallResult;
 import com.sdk4.boot.bo.LoginUser;
+import com.sdk4.boot.common.BaseResponse;
 import com.sdk4.boot.enums.UserTypeEnum;
 
 /**
@@ -14,7 +14,7 @@ public interface AuthService {
     /**
      * 登录
      */
-    CallResult<LoginUser> loginByMobile(UserTypeEnum type, String mobile, String password);
+    BaseResponse<LoginUser> loginByMobile(UserTypeEnum type, String mobile, String password);
 
     /**
      * 根据 token 获取用户

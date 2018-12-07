@@ -3,7 +3,7 @@ package com.sdk4.boot.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.sdk4.boot.CallResult;
+import com.sdk4.boot.common.BaseResponse;
 import com.sdk4.boot.domain.SmsCode;
 import com.sdk4.boot.enums.SmsCodeStatusEnum;
 import com.sdk4.boot.repository.SmsCodeRepository;
@@ -37,8 +37,8 @@ public class SmsServiceImpl implements SmsService {
     private static final int TIMEOUT = 5 * 60 * 1000;
 
     @Override
-    public CallResult<SmsCode> sendCheckCode(String type, String mobile) {
-        CallResult<SmsCode> result = new CallResult<>();
+    public BaseResponse<SmsCode> sendCheckCode(String type, String mobile) {
+        BaseResponse<SmsCode> result = new BaseResponse<>();
 
         String code = RandomStringUtils.randomNumeric(4);
 
@@ -50,12 +50,12 @@ public class SmsServiceImpl implements SmsService {
         smsCode.setCreateTime(new Date());
 
         if (StringUtils.isEmpty(type)) {
-            result.setError(4, "验证码类型为空");
+            result.put(4, "验证码类型为空");
 
             smsCode.setStatus(SmsCodeStatusEnum.FAIL.getCode());
             smsCode.setStatusDesc(result.getMessage());
         } else if (!SmsHelper.containTemplate(type)) {
-            result.setError(4, "验证码类型不存在[" + type + "]");
+            result.put(4, "验证码类型不存在[" + type + "]");
 
             smsCode.setStatus(SmsCodeStatusEnum.FAIL.getCode());
             smsCode.setStatusDesc(result.getMessage());
@@ -102,8 +102,8 @@ public class SmsServiceImpl implements SmsService {
     }
 
     @Override
-    public CallResult<SmsCode> verifyCheckCode(String type, String mobile, String code) {
-        CallResult<SmsCode> result = new CallResult<>();
+    public BaseResponse<SmsCode> verifyCheckCode(String type, String mobile, String code) {
+        BaseResponse<SmsCode> result = new BaseResponse<>();
 
         SmsCode where = new SmsCode();
         where.setMobile(mobile);

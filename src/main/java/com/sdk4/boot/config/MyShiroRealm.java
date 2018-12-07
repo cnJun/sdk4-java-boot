@@ -1,7 +1,7 @@
 package com.sdk4.boot.config;
 
-import com.sdk4.boot.CallResult;
 import com.sdk4.boot.bo.LoginUser;
+import com.sdk4.boot.common.BaseResponse;
 import com.sdk4.boot.enums.UserTypeEnum;
 import com.sdk4.boot.service.AuthService;
 import org.apache.shiro.authc.*;
@@ -47,8 +47,8 @@ public class MyShiroRealm extends AuthorizingRealm {
         String username = upt.getUsername();
         String password = new String(upt.getPassword());
 
-        CallResult<LoginUser> callResult = authService.loginByMobile(UserTypeEnum.ADMIN_USER, username, password);
-        if (callResult.success()) {
+        BaseResponse<LoginUser> callResult = authService.loginByMobile(UserTypeEnum.ADMIN_USER, username, password);
+        if (callResult.isSuccess()) {
             try {
                 return new SimpleAuthenticationInfo(username, password, callResult.getData().getToken().tokenString());
             } catch (UnsupportedEncodingException e) {

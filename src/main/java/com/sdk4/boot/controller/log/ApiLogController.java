@@ -1,10 +1,10 @@
 package com.sdk4.boot.controller.log;
 
 import com.google.common.collect.Lists;
-import com.sdk4.boot.AjaxResponse;
 import com.sdk4.boot.apiengine.ApiFactory;
 import com.sdk4.boot.apiengine.ApiService;
-import com.sdk4.boot.db.PageResult;
+import com.sdk4.boot.common.BaseResponse;
+import com.sdk4.boot.common.PageResponse;
 import com.sdk4.boot.domain.ApiLog;
 import com.sdk4.boot.service.LogService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,27 +26,22 @@ public class ApiLogController {
     @Autowired
     LogService logService;
 
-    @ResponseBody
     @RequestMapping(value = { "apinames" }, produces = "application/json;charset=UTF-8" )
-    public String apinames(@RequestBody Map reqMap) {
+    public BaseResponse<List<String>> apinames(@RequestBody Map reqMap) {
         Map<String, ApiService> apis = ApiFactory.getAllApi();
         List<String> names = Lists.newArrayList();
         for (Map.Entry<String, ApiService> entry : apis.entrySet()) {
             names.add(entry.getValue().method());
         }
 
-        AjaxResponse ret = new AjaxResponse(0, "获取成功", names);
+        BaseResponse<List<String>> ret = new BaseResponse(0, "获取成功", names);
 
-        return ret.toJSONString();
+        return ret;
     }
 
-    @ResponseBody
     @RequestMapping(value = { "apilog" }, produces = "application/json;charset=UTF-8" )
-    public String apilog(@RequestBody Map reqMap) {
-        PageResult<ApiLog> pageResult = logService.queryApiLog(reqMap);
-
-        AjaxResponse ret = AjaxResponse.by(pageResult);
-
-        return ret.toJSONString();
+    public PageResponse apilog(@RequestBody Map reqMap) {
+        PageResponse<ApiLog> pageResponse = logService.queryApiLog(reqMap);
+        return pageResponse;
     }
 }
