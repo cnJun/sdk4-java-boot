@@ -61,7 +61,13 @@ public enum BaseError {
     /**
      * 业务处理失败
      */
-    BIZ_FAIL(50000, "业务处理失败"),
+    BIZ_FAIL            (50000, "业务处理失败"),
+    BIZ_DATA_NOT_EXIST  (50001, "数据不存在"),
+
+    /**
+     * 第三方接口调用失败
+     */
+    INTERFACE_CALL_FAIL(60000, "第三方接口调用失败"),
 
     ;
 

@@ -10,7 +10,7 @@
 
     <groupId>com.sdk4</groupId>
     <artifactId>sdk4-java-boot</artifactId>
-    <version>0.0.2-4-SNAPSHOT</version>
+    <version>0.0.2-8-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>sdk4-java-boot</name>

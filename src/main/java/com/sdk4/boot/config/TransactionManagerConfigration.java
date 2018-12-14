@@ -3,6 +3,7 @@ package com.sdk4.boot.config;
 import com.sdk4.boot.db.TransactionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
 /**
@@ -10,6 +11,7 @@ import org.springframework.transaction.PlatformTransactionManager;
  *
  * @author sh
  */
+@Configuration
 public class TransactionManagerConfigration {
     @Autowired
     private PlatformTransactionManager transactionManager;

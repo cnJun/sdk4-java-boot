@@ -67,9 +67,11 @@ public class SmsServiceImpl implements SmsService {
             if (ret.success()) {
                 smsCode.setStatus(SmsCodeStatusEnum.PENDING.getCode());
                 result.setCode(0);
+                result.setMessage("验证码发送成功");
             } else {
                 smsCode.setStatus(SmsCodeStatusEnum.FAIL.getCode());
                 result.setCode(4);
+                result.setMessage("验证码发送失败");
 
                 if (ret.getException() != null) {
                     log.error("发送短信发送异常:{}:{}:{}", type, mobile, code, ret.getException());
@@ -78,8 +80,6 @@ public class SmsServiceImpl implements SmsService {
 
             smsCode.setMsgId(ret.getMsgId());
             smsCode.setStatusDesc(ret.getMessage());
-
-            result.setMessage(ret.getMessage());
 
             SmsHelper.Cfg cfg = ret.getCfg();
             if (cfg != null) {

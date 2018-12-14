@@ -34,4 +34,12 @@ public class PageResponse<T> extends BaseResponse<List<T>> {
         this.pageCount = page.getTotalPages();
         this.data = data;
     }
+
+    public PageResponse(PageResponse page, List<T> data) {
+        this.total = page.getTotal();
+        this.pageIndex = page.getPageIndex();
+        this.pageSize = page.getPageSize();
+        this.pageCount = page.getPageCount();
+        this.data = data;
+    }
 }

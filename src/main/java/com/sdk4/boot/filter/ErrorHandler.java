@@ -8,11 +8,13 @@ import com.sdk4.common.util.WebUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 
@@ -27,26 +29,30 @@ public class ErrorHandler {
     private String maxFileSize;
 
     @ExceptionHandler(value = BusinessException.class)
-    public BaseResponse handlerBusinessException(HttpServletRequest request, BusinessException e) {
+    public BaseResponse handlerBusinessException(HttpServletRequest request, HttpServletResponse response, BusinessException e) {
         logError(request, e);
+        response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
         return new BaseResponse(e);
     }
 
     @ExceptionHandler(value = MaxUploadSizeExceededException.class)
-    public BaseResponse handlerMaxUploadSizeExceededException(HttpServletRequest request, MaxUploadSizeExceededException e) {
+    public BaseResponse handlerMaxUploadSizeExceededException(HttpServletRequest request, HttpServletResponse response, MaxUploadSizeExceededException e) {
         logError(request, e);
+        response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
         return new BaseResponse(BaseError.INVALID_PARAMETER.getCode(), "文件大小不能超过" + maxFileSize);
     }
 
     @ExceptionHandler(value = Exception.class)
-    public BaseResponse handlerException(HttpServletRequest request,  Exception e) {
+    public BaseResponse handlerException(HttpServletRequest request, HttpServletResponse response,  Exception e) {
         logError(request, e);
+        response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
         return new BaseResponse(BaseError.SYSTEM_ERROR);
     }
 
     @ExceptionHandler(value = RuntimeException.class)
-    public BaseResponse handlerRuntimeException(HttpServletRequest request, RuntimeException e) {
+    public BaseResponse handlerRuntimeException(HttpServletRequest request, HttpServletResponse response, RuntimeException e) {
         logError(request, e);
+        response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
         return new BaseResponse(BaseError.SYSTEM_ERROR);
     }
 

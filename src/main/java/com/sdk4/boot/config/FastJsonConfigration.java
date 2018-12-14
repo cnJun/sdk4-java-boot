@@ -2,17 +2,15 @@ package com.sdk4.boot.config;
 
 import com.alibaba.fastjson.PropertyNamingStrategy;
 import com.alibaba.fastjson.serializer.SerializeConfig;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * FastJson 配置
  *
  * @author sh
  */
+@Configuration
 public class FastJsonConfigration {
-    private FastJsonConfigration() {
-        throw new IllegalStateException("Utility class");
-    }
-
     public static final SerializeConfig serializeConfig = new SerializeConfig();
 
     static {
